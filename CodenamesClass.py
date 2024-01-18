@@ -1,16 +1,25 @@
 import numpy as np
+from PlayerClass import Player
+import types
 
 class Codenames:
-    def __init__(self, vocab):
+    def __init__(self, vocab: list, players: list[Player]):
         """
         Args:
             vocab (list): list of lower case strings
         """
         self.vocab = vocab
-        # self.spymaster_a = Player()
-        # self.spymaster_b = Player()
-        # self.guesser_a = Player()
-        # self.guesser_b = Player()
+        self.players = {
+            'R': {
+                'spymaster': players[0],
+                'guesser': players[1]
+            },
+            'B': {
+                'spymaster': players[2],
+                'guesser': players[3]
+            }
+        }
+
         self.first_turn = np.random.choice(['R', 'B'])
         self.current_turn = self.first_turn
         self.words = np.random.choice(self.vocab, 25)
@@ -27,7 +36,9 @@ class Codenames:
         # current team guesses
         # check if game is over after each guess
         # if not, switch current team and repeat
-        pass
+        clue = self.get_clue()
+        self.make_guesses(clue)
+        self.current_turn = self.get_other_team()
 
     def get_clue(self):
         # `current_team spymaster`.get_clue() (maybe store Player objects in dict of self.players)
@@ -36,7 +47,7 @@ class Codenames:
             # validate clue
                 # str must be in words and not revealed
                 # int must > 0 and <= 8
-        pass
+        self.players[self.current_turn]['spymaster'].get_clue()
 
     def make_guesses(self, clue):
         # print board map and clue for user (not colour coded)
